@@ -76,9 +76,10 @@ def wait_until(status, order_id, api=None, max_wait=59):
     return True
 #wait_until_filled = wait_until("filled")
 def cancel_current_orders():
-    current_order=get_open_orders()[0]
-    if current_order is not None:
-        api.cancel_order(current_order.id)
+    if get_open_orders() is not None:
+        current_order=get_open_orders()[0]
+        if current_order is not None:
+            api.cancel_order(current_order.id)
 
     return
 def send_order(target_qty, last_price, symbol):
