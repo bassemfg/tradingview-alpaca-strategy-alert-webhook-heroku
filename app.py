@@ -126,7 +126,7 @@ def send_order(target_qty, last_price, symbol):
                 client_order_id = 'Buying_' + \
                     re.sub('[^A-Za-z0-9]+', '', str(datetime.datetime.now()))
                 
-                if check_runaway_open_order(buy_side, last_price):#False:#
+                if False:#check_runaway_open_order(buy_side, last_price):#False:#
                     pass
                 else:
                     # Get our order using its Client Order ID.
@@ -159,7 +159,7 @@ def send_order(target_qty, last_price, symbol):
                 print('position', position)
                 print(f'Buying {buy_qty} shares at ', last_price)
 
-                if check_runaway_open_order(buy_side, last_price):#False:#
+                if False:#check_runaway_open_order(buy_side, last_price):#False:#
                     pass
                 else:
                     cancel_current_orders()
@@ -192,7 +192,7 @@ def send_order(target_qty, last_price, symbol):
                     re.sub('[^A-Za-z0-9]+', '', str(datetime.datetime.now()))
 
 
-                if check_runaway_open_order(buy_side, last_price):#False:#
+                if False:#check_runaway_open_order(buy_side, last_price):#False:#
                     pass
                 else:
                     current_order = api.submit_order(
@@ -225,7 +225,7 @@ def send_order(target_qty, last_price, symbol):
                 client_order_id = 'Selling_' + \
                     re.sub('[^A-Za-z0-9]+', '', str(datetime.datetime.now()))
 
-                if check_runaway_open_order(buy_side, last_price):#False:#
+                if False:#check_runaway_open_order(buy_side, last_price):#False:#
                     pass
                 else:
                     cancel_current_orders()
