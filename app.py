@@ -250,10 +250,10 @@ def webhook():
             'message': 'nice try buddy'
         }
     
-    price = webhook_message['strategy']['order']['price']
+    price = webhook_message['strategy']['order_price']
     quantity = webhook_message['strategy']['position_size']
     symbol = webhook_message['ticker']
-    side = webhook_message['strategy']['order']['action']
+    side = webhook_message['strategy']['order_action']
     
     #order = api.submit_order(symbol, quantity, side, 'limit', 'gtc', limit_price=price)
     send_order( quantity, price, symbol)
