@@ -93,7 +93,7 @@ def send_order(target_qty, last_price, symbol):
     if not ((datetime.datetime.now().time() >= datetime.datetime.strptime(live_trade_start_time, ("%H:%M:%S")).time()) &
         (datetime.datetime.now().time() <= datetime.datetime.strptime(live_trade_end_time,("%H:%M:%S")).time())):
         print('outside live trading hours')
-        return
+        #return
     
     delta = int(target_qty) - position
 
