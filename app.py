@@ -48,12 +48,14 @@ def check_runaway_open_order(order_side, order_price):
 def get_position(symbol='TQQQ'):
 
     try:
-        position = int(api.get_position(symbol).qty)
+        qty = int(api.get_position(symbol).qty)
+        position = api.get_position(symbol)
     except:
         # No position exists
-        position = 0
+        qty = 0
+        position=None
     
-    return position
+    return qty, position
 
 
 def check_status(mystatus, id):
@@ -90,7 +92,7 @@ def send_order(target_qty, last_price, symbol):
     sell_side="sell"
     buy_side = "buy"
     
-    position = get_position()
+    position, position_obj = get_position()
     print('position', position)
 
     if not ((datetime.datetime.now().time() >= datetime.datetime.strptime(live_trade_start_time, ("%H:%M:%S")).time()) &
