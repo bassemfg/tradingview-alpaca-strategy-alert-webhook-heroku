@@ -279,7 +279,7 @@ def write_dropbox_message( quantity, price, symbol):
     try:
             
         dbx = dropbox.Dropbox(config.DB_App1_ACCESS_TOKEN,
-                            app_key=config.db_app_key, app_secret=config.db_app_Secret)
+                            app_key=config.db_app_key, app_secret=config.db_app_secret)
         filename = r'/herokusync/NQ1H_KNN.csv'
         f, r = dbx.files_download(filename)
         data = str(r.content, encoding='utf-8')
