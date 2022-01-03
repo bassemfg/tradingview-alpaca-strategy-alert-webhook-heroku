@@ -278,16 +278,17 @@ def webhook():
 def write_dropbox_message( quantity, price, symbol):
     try:
             
-        dbx = dropbox.Dropbox(config.DB_App1_ACCESS_TOKEN)
-        filename = 'NQ1H_KNN.csv'
+        dbx = dropbox.Dropbox(config.DB_App1_ACCESS_TOKE,
+                            app_key=config.db_app_key, app_secret=config.db_app_Secret)
+        filename = r'/herokusync/NQ1H_KNN.csv'
         f, r = dbx.files_download(filename)
-        data = r.content
-        data += datetime.datetime.now() + ',' + symbol + ',' + quantity + ',' + price + '\r\n'
-        dbx.files_upload(data, filename, mute=True)
+        data = str(r.content, encoding='utf-8')
+        
+        data+= str(datetime.datetime.now()) + ',,,' + "\r\n"
+        dbx.files_upload(bytes(data, encoding='utf-8'), filename, mute=True, mode=dropbox.files.WriteMode.overwrite)
     except Exception as e:
         print(e)
         return False
-    
     return True
 
 
