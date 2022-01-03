@@ -4,6 +4,7 @@ import config, json, requests
 import datetime
 import re
 import time
+import dropbox
 
 app = Flask(__name__)
 
@@ -273,3 +274,48 @@ def webhook():
         requests.post(config.DISCORD_WEBHOOK_URL, json=chat_message)
 
     return webhook_message
+
+def write_dropbox_message( quantity, price, symbol):
+    try:
+            
+        dbx = dropbox.Dropbox(config.DB_App1_ACCESS_TOKEN)
+        filename = 'NQ1H_KNN.csv'
+        f, r = dbx.files_download(filename)
+        data = r.content
+        data += datetime.datetime.now() + ',' + symbol + ',' + quantity + ',' + price + '\r\n'
+        dbx.files_upload(data, filename, mute=True)
+    except Exception as e:
+        print(e)
+        return False
+    
+    return True
+
+
+@app.route('/webhooknq1h', methods=['POST'])
+def webhooknq1h():
+    webhook_message = json.loads(request.data)
+
+    if webhook_message['passphrase'] != config.WEBHOOK_PASSPHRASE:
+        return {
+            'code': 'error',
+            'message': 'nice try buddy'
+        }
+    
+    price = webhook_message['strategy']['order_price']
+    quantity = webhook_message['strategy']['position_size']
+    symbol = webhook_message['ticker']
+    side = webhook_message['strategy']['order_action']
+    
+    #order = api.submit_order(symbol, quantity, side, 'limit', 'gtc', limit_price=price)
+    result = write_dropbox_message( quantity, price, symbol)
+    # if a DISCORD URL is set in the config file, we will post to the discord webhook
+    if config.DISCORD_WEBHOOK_URL:
+        chat_message = {
+            "username": "strategyalert",
+            "avatar_url": "https://i.imgur.com/4M34hi2.png",
+            "content": f"tradingview strategy alert triggered: {quantity} {symbol} @ {price}"
+        }
+
+        requests.post(config.DISCORD_WEBHOOK_URL, json=chat_message)
+
+    return webhook_message, result
