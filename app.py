@@ -284,7 +284,7 @@ def write_dropbox_message( quantity, price, symbol):
         f, r = dbx.files_download(filename)
         data = str(r.content, encoding='utf-8')
         
-        data+= str(datetime.datetime.now()) + ',,,' + "\r\n"
+        data+= str(datetime.datetime.now()) + quantity+',' + price +',' + symbol +',' +"\r\n"
         dbx.files_upload(bytes(data, encoding='utf-8'), filename, mute=True, mode=dropbox.files.WriteMode.overwrite)
     except Exception as e:
         print(e)
